@@ -1,0 +1,38 @@
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: ingressroutes.traefik.containo.us
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`int-assets.swissgeol.ch`)
+      priority: 100
+      services:
+        - name: swissgeol-asset-app
+          port: 80
+    - kind: Rule
+      match: Host(`int-assets.swissgeol.ch`) && PathPrefix(`/api`)
+      priority: 120
+      services:
+        - name: swissgeol-asset-api
+          port: 3333
+    - kind: Rule
+      match: Host(`int-assets.swissgeol.ch`) && PathPrefix(`/auth`)
+      middlewares:
+        - name: swissgeol-asset-auth-rewrite
+      priority: 121
+      services:
+        - name: swissgeol-asset-gotrue
+          port: 8081
+    - kind: Rule
+      match: Host(`int-assets.swissgeol.ch`) && PathPrefix(`/kibana`)
+      middlewares:
+        - name: swissgeol-asset-kibana-rewrite
+      priority: 110
+      services:
+        - name: swissgeol-asset-kibana
+          port: 5601
+
+

@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swissgeol-asset-kibana
+  namespace: swissgeol-asset
+  annotations:
+    keel.sh/policy: force
+    keel.sh/match-tag: 'true'
+    keel.sh/trigger: poll
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: swissgeol-asset-kibana
+  template:
+    metadata:
+      labels:
+        app: swissgeol-asset-kibana
+    spec:
+      containers:
+        - name: swissgeol-asset-kibana-int
+          image: ghcr.io/geoadmin/swissgeol-search-kibana:latest
+          ports:
+            - containerPort: 5601              
+          env:
+            - name: SERVER_BASEPATH
+              value: /kibana
+            - name: SERVER_PUBLICBASEURL
+              value: https://int-assets.swissgeol.ch/kibana
+            - name: ELASTICSEARCH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: swissgeol-asset-secrets
+                  key: elasticPassword
+            - name: ELASTICSEARCH_HOSTS
+              value: >-
+                http://kibana_system:$(ELASTICSEARCH_PASSWORD)@swissgeol-asset-elasticsearch:9200
+            - name: xpack.encryptedSavedObjects.encryptionKey
+              valueFrom:
+                secretKeyRef:
+                  name: swissgeol-asset-secrets
+                  key: elasticEncryptionKey
+          resources:
+            limits:
+              cpu: '2'
+              memory: 1024M
+            requests:
+              cpu: 250m
+              memory: 256M          
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: geoadmin-ghcr-registry

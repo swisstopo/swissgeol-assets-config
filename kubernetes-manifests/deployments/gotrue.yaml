@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swissgeol-asset-gotrue
+  namespace: swissgeol-asset
+  annotations:
+    keel.sh/policy: force
+    keel.sh/match-tag: 'true'
+    keel.sh/trigger: poll
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: swissgeol-asset-gotrue
+  template:
+    metadata:
+      labels:
+        app: swissgeol-asset-gotrue
+    spec:
+      containers:
+      - name: swissgeol-asset-gotrue
+        image: ghcr.io/geoadmin/swissgeol-auth-gotrue:latest
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 8081
+        env:
+          - name: GOTRUE_API_HOST
+            value: 0.0.0.0
+          - name: GOTRUE_SITE_URL
+            value: https://dev-assets.swissgeol.ch
+          - name: GOTRUE_DB_DRIVER
+            value: postgres
+          - name: DB_DRIVER
+            value: postgres
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: swissgeol-asset-secrets
+                key: authDbCon
+          - name: GOTRUE_COOKIE_KEY
+            value: asset-sg
+          - name: GOTRUE_JWT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: swissgeol-asset-secrets
+                key: gotrueJwtSecret
+          - name: GOTRUE_DISABLE_SIGNUP
+            value: 'false'
+          - name: GOTRUE_SMTP_SENDER_NAME
+            value: Swissgeol
+          - name: GOTRUE_MAILER_URLPATHS_INVITE
+            value: https://dev-assets.swissgeol.ch/auth/verify
+          - name: GOTRUE_MAILER_URLPATHS_CONFIRMATION
+            value: /auth/v1/verify
+          - name: GOTRUE_MAILER_URLPATHS_RECOVERY
+            value: https://dev-assets.swissgeol.ch/auth/verify
+          - name: GOTRUE_MAILER_URLPATHS_EMAIL_CHANGE
+            value: /auth/v1/verify
+          - name: GOTRUE_MAILER_TEMPLATES_INVITE
+            value: https://dev-assets.swissgeol.ch/assets/email-templates/invite.html
+          - name: GOTRUE_MAILER_TEMPLATES_RECOVERY
+            value: https://dev-assets.swissgeol.ch/assets/email-templates/recover.html
+          - name: GOTRUE_SMTP_ADMIN_EMAIL
+            value: swissgeol@swisstopo.ch
+          - name: SMTP_ADMIN_EMAIL
+            value: swissgeol@swisstopo.ch
+          - name: GOTRUE_SMTP_HOST
+            value: mailrelay.swissgeol.ch
+          - name: GOTRUE_SMTP_PORT
+            value: '25'
+      imagePullSecrets:
+      - name: geoadmin-ghcr-registry
+      
+
+
+      
