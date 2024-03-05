@@ -1,0 +1,39 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ .Release.Name }}-routes
+  namespace: {{ .Release.Namespace }}  
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`{{ .Values.host }}`)
+      priority: 100
+      services:
+        - name: {{ .Release.Name }}-app
+          port: 80
+    - kind: Rule
+      match: Host(`{{ .Values.host }}`) && PathPrefix(`/api`)
+      priority: 120
+      services:
+        - name: {{ .Release.Name }}-api
+          port: 3333
+    - kind: Rule
+      match: Host(`{{ .Values.host }}`) && PathPrefix(`/auth`)
+      middlewares:
+        - name: {{ .Release.Name }}-auth-rewrite
+      priority: 121
+      services:
+        - name: {{ .Release.Name }}-gotrue
+          port: 8081
+    - kind: Rule
+      match: Host(`{{ .Values.host }}`) && PathPrefix(`/kibana`)
+      middlewares:
+        - name: {{ .Release.Name }}-kibana-rewrite
+      priority: 110
+      services:
+        - name: {{ .Release.Name }}-kibana
+          port: 5601
+
+

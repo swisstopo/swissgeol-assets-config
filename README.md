@@ -1,6 +1,6 @@
-# Environment configuration for [Asset SwissGeol](https://github.com/geoadmin/web-asset-swissgeol)
+# Environment configuration for [SwissGeol Assets](https://github.com/geoadmin/web-asset-swissgeol)
 
-## Configure and run Asset SwissGeol 
+## Configure and run SwissGeol Assets
 
 (For kubernetes deployment see [kubernetes-manifests](./kubernetes-manifests/README.md))
 

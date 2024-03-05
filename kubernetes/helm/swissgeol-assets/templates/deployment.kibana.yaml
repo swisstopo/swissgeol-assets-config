@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-kibana
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    keel.sh/policy: force
+    keel.sh/match-tag: 'true'
+    keel.sh/trigger: poll
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-kibana
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-kibana
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-kibana
+          image: {{ .Values.image_kibana }}
+          ports:
+            - containerPort: 5601              
+          env:
+            - name: SERVER_BASEPATH
+              value: /kibana
+            - name: SERVER_PUBLICBASEURL
+              value: https://{{ .Values.host }}/kibana
+            - name: ELASTICSEARCH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: elasticPassword
+            - name: ELASTICSEARCH_HOSTS
+              value: >-
+                http://kibana_system:$(ELASTICSEARCH_PASSWORD)@{{ .Release.Name }}-elasticsearch:9200
+            - name: xpack.encryptedSavedObjects.encryptionKey
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: elasticEncryptionKey
+          resources:
+            limits:
+              cpu: '2'
+              memory: 1024M
+            requests:
+              cpu: 250m
+              memory: 256M          
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: {{ .Release.Namespace }}-registry
