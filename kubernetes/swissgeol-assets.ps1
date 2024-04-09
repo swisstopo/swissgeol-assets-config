@@ -24,10 +24,8 @@ kubectl config set-context --current --namespace=$namespace
 Write-Output "*** Execute action '$action' on context '$namespace-$context' ***"
 if ($action -eq 'install') {
     helm install $name helm/swissgeol-assets --namespace=$namespace --values helm/swissgeol-assets/values-$context.yaml --values helm/swissgeol-assets/secrets-$context.yaml
-}
-elseif ($action -eq 'uninstall') {
+} elseif ($action -eq 'uninstall') {
     helm uninstall $name --namespace=$namespace
-}
-else {
+} else {
     Write-Output "Invalid action '$action'"
 }

@@ -1,6 +1,6 @@
-# Environment file containing sensitive data
+# file containing sensitive data
 .env
 secrets-*.yaml
 values-*.yaml
-
+registry.yaml
 

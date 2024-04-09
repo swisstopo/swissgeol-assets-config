@@ -31,10 +31,10 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .Release.Name }}-secrets
-                  key: elasticPassword
+                  key: kibanaPassword
             - name: ELASTICSEARCH_HOSTS
               value: >-
-                http://kibana_system:$(ELASTICSEARCH_PASSWORD)@{{ .Release.Name }}-elasticsearch:9200
+                http://kibana_system:$(ELASTICSEARCH_PASSWORD)@{{ .Release.Name  }}-elasticsearch:9200
             - name: xpack.encryptedSavedObjects.encryptionKey
               valueFrom:
                 secretKeyRef:

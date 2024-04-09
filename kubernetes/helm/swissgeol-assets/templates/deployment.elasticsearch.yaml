@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: swissgeol-asset-elasticsearch
+  name: {{ .Release.Name }}-elasticsearch
   namespace: {{ .Release.Namespace }}
   annotations:
     keel.sh/policy: force
@@ -18,9 +18,9 @@ spec:
         app: {{ .Release.Name }}-elasticsearch
     spec:
       volumes:
-        - name: {{ .Values.volume_elasticsearch }}
+        - name: {{ .Release.Name }}-elasticsearch-volume
           persistentVolumeClaim:
-            claimName: {{ .Values.volume_elasticsearch }}
+            claimName: {{ .Release.Name }}-elasticsearch-volume-claim
       containers:
         - name: {{ .Release.Name }}-elasticsearch
           image: {{ .Values.image_elasticsearch }}
@@ -31,15 +31,13 @@ spec:
               value: single-node
             - name: ES_JAVA_OPTS
               value: '-Xms1024m -Xmx1024m'
-            - name: ELASTIC_USERNAME
-              value: elastic
             - name: ELASTIC_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Release.Name }}-secrets
                   key: elasticPassword
             - name: xpack.security.enabled
-              value: 'true'
+              value: 'false'
             - name: xpack.encryptedSavedObjects.encryptionKey
               valueFrom:
                 secretKeyRef:
@@ -55,7 +53,7 @@ spec:
               cpu: '1'
               memory: 2Gi
           volumeMounts:
-            - name: {{ .Values.volume_elasticsearch }}
+            - name: {{ .Release.Name }}-elasticsearch-volume
               mountPath: /usr/share/elasticsearch/data  
       restartPolicy: Always
       securityContext:

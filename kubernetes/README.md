@@ -8,6 +8,7 @@
 2. Download, install and configure [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 3. Download, install and configure [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/#install-nonstandard-package-tools)
 4. Download, install and configure [helm](https://helm.sh/docs/intro/install/)
+5. Keel is deployed into cluster [keel installation](https://keel.sh/docs/#installation)
 
 ## Validate Application
 

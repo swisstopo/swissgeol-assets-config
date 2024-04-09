@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: {{ .Release.Name }}-app
-        image: ghcr.io/geoadmin/swissgeol-asset-app:latest
+        image: {{ .Values.image_app }}
         imagePullPolicy: Always
         ports:
           - containerPort: 80
