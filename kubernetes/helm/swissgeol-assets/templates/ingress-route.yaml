@@ -33,7 +33,7 @@ spec:
         - name: {{ .Release.Name }}-kibana-rewrite
       priority: 110
       services:
-        - name: {{ .Release.Name }}-kibana
+        - name: {{ .Values.kibana_service }}
           port: 5601
     - kind: Rule
       match: Host(`{{ .Values.host }}`) && PathPrefix(`/elasticsearch`)
@@ -41,7 +41,7 @@ spec:
         - name: {{ .Release.Name }}-elasticsearch-rewrite
       priority: 130
       services:
-        - name: {{ .Release.Name }}-elasticsearch
+        - name: {{ .Values.elasticsearch_service }}
           port: 9200
 
 

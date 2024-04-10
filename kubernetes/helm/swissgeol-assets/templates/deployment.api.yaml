@@ -31,7 +31,7 @@ spec:
             - name: FRONTEND_URL
               value: https://{{ .Values.host }}
             - name: ELASTICSEARCH_URL
-              value: http://{{ .Values.url_elasticsearch }}
+              value: http://{{ .Values.elsaticsearch_service }}:9200
             - name: ELASTICSEARCH_USERNAME
               value: elastic
             - name: ELASTICSEARCH_PASSWORD

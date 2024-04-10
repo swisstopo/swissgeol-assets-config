@@ -9,11 +9,12 @@ param (
 )
 
 # Default namespace
-$namespace = "swissgeol-assets"
-$name = "swissgeol-assets"
+$namespace = "swissgeol-search"
+$name = "swissgeol-search"
+$project = "swissgeol-assets"
 
 Write-Output "*** Prepare kubectl context '$namespace-$context' ***"
-kubectl config use-context $namespace-$context
+kubectl config use-context $project-$context
 kubectl create namespace $namespace --dry-run=client -o yaml | kubectl apply -f - 
 kubectl config set-context --current --namespace=$namespace
 
@@ -23,9 +24,9 @@ kubectl config set-context --current --namespace=$namespace
 
 Write-Output "*** Execute action '$action' on context '$namespace-$context' ***"
 if ($action -eq 'install') {
-    helm install $name helm/swissgeol-assets --namespace=$namespace --values helm/swissgeol-assets/values-$context.yaml --values helm/swissgeol-assets/secrets-$context.yaml
+    helm install $name helm/swissgeol-search --namespace=$namespace --values helm/swissgeol-search/values-$context.yaml --values helm/swissgeol-search/secrets-$context.yaml
 } elseif ($action -eq 'upgrade') {
-    helm upgrade $name helm/swissgeol-assets --namespace=$namespace --values helm/swissgeol-assets/values-$context.yaml --values helm/swissgeol-assets/secrets-$context.yaml
+    helm upgrade $name helm/swissgeol-search --namespace=$namespace --values helm/swissgeol-search/values-$context.yaml --values helm/swissgeol-search/secrets-$context.yaml
 } elseif ($action -eq 'uninstall') {
     helm uninstall $name --namespace=$namespace
 } else {

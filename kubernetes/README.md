@@ -25,13 +25,16 @@ helm install --dry-run swissgeol-assets helm/swissgeol-assets
 
 Use the following commands to install and uninstall the swissgeol-asset application on the cluster.
 
-Valid actions are `install` and `uninstall`.
+Valid actions are `install`, `upgrade` and `uninstall`.
 Valid contexts are `dev`, `int` and `prod`.
 
 ```bash
 # Installs the application on the cluster
-.\swissgeol-assets.ps1 -action configure -context dev
+.\swissgeol-assets.ps1 -action install -context dev
+
+# Update the application on the cluster
+.\swissgeol-assets.ps1 -action upgrade -context dev
 
 # Uninstall the application from the cluster. Use with caution!
-.\swissgeol-assets.ps1 -action install -context dev
+.\swissgeol-assets.ps1 -action uninstall -context dev
 ```

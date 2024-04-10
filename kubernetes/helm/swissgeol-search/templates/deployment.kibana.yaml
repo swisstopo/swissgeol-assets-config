@@ -27,6 +27,8 @@ spec:
               value: /kibana
             - name: SERVER_PUBLICBASEURL
               value: https://{{ .Values.host }}/kibana
+            - name: ELASTICSEARCH_USERNAME
+              value: kibana_system
             - name: ELASTICSEARCH_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -34,12 +36,12 @@ spec:
                   key: kibanaPassword
             - name: ELASTICSEARCH_HOSTS
               value: >-
-                http://kibana_system:$(ELASTICSEARCH_PASSWORD)@{{ .Release.Name  }}-elasticsearch:9200
+                http://{{ .Release.Name  }}-elasticsearch:9200
             - name: xpack.encryptedSavedObjects.encryptionKey
               valueFrom:
                 secretKeyRef:
                   name: {{ .Release.Name }}-secrets
-                  key: elasticEncryptionKey
+                  key: elasticEncryptionKey            
           resources:
             limits:
               cpu: '2'

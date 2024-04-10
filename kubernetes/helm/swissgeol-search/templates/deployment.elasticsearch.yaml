@@ -37,7 +37,7 @@ spec:
                   name: {{ .Release.Name }}-secrets
                   key: elasticPassword
             - name: xpack.security.enabled
-              value: 'false'
+              value: 'true'
             - name: xpack.encryptedSavedObjects.encryptionKey
               valueFrom:
                 secretKeyRef:
