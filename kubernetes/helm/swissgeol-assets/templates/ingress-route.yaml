@@ -19,29 +19,3 @@ spec:
       services:
         - name: {{ .Release.Name }}-api
           port: 3333
-    - kind: Rule
-      match: Host(`{{ .Values.host }}`) && PathPrefix(`/auth`)
-      middlewares:
-        - name: {{ .Release.Name }}-auth-rewrite
-      priority: 130
-      services:
-        - name: {{ .Release.Name }}-gotrue
-          port: 8081
-    - kind: Rule
-      match: Host(`{{ .Values.host }}`) && PathPrefix(`/kibana`)
-      middlewares:
-        - name: {{ .Release.Name }}-kibana-rewrite
-      priority: 110
-      services:
-        - name: {{ .Values.kibana_service }}
-          port: 5601
-    - kind: Rule
-      match: Host(`{{ .Values.host }}`) && PathPrefix(`/elasticsearch`)
-      middlewares:
-        - name: {{ .Release.Name }}-elasticsearch-rewrite
-      priority: 130
-      services:
-        - name: {{ .Values.elasticsearch_service }}
-          port: 9200
-
-

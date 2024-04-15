@@ -16,25 +16,32 @@ Validate deployment with
 ```bash
 helm lint helm/swissgeol-assets
 ```
+```bash
+helm lint helm/swissgeol-search
+```
 or pretend to install the chart to the cluster and if there is some issue it will show the error.
 ```bash
 helm install --dry-run swissgeol-assets helm/swissgeol-assets
 ```
+```bash
+helm install --dry-run swissgeol-search helm/swissgeol-search
+```
 
 ## Deploy Application
 
-Use the following commands to install and uninstall the swissgeol-asset application on the cluster.
+Use the following commands to install, upgrade and uninstall the swissgeol-asset/swissgeol-search application on the cluster.
 
 Valid actions are `install`, `upgrade` and `uninstall`.
-Valid contexts are `dev`, `int` and `prod`.
+Valid apps are `assets` and `search`.
+Valid stages are `dev`, `int` and `prod`.
 
 ```bash
 # Installs the application on the cluster
-.\swissgeol-assets.ps1 -action install -context dev
+.\swissgeol-app.ps1 -action install -app assets -stage dev -context my-stage-context
 
 # Update the application on the cluster
-.\swissgeol-assets.ps1 -action upgrade -context dev
+.\swissgeol-app.ps1 -action upgrade -app assets -stage dev -context my-stage-context
 
 # Uninstall the application from the cluster. Use with caution!
-.\swissgeol-assets.ps1 -action uninstall -context dev
+.\swissgeol-app.ps1 -action uninstall -app assets -stage dev -context my-stage-context
 ```
