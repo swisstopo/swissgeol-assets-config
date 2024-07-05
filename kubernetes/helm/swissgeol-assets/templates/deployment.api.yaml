@@ -74,5 +74,12 @@ spec:
             value: {{ .Values.oauth_token_endpoint }}
           - name: OAUTH_AUTHORIZED_GROUPS
             value: {{ .Values.oauth_authorized_groups }}
+        resources:
+          limits:
+            cpu: '1'
+            memory: 1Gi
+          requests:
+            cpu: '1'
+            memory: 1Gi
       imagePullSecrets:
       - name: {{ .Release.Namespace }}-registry
