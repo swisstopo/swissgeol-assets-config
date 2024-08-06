@@ -76,10 +76,10 @@ spec:
             value: {{ .Values.oauth_authorized_groups }}
         resources:
           limits:
-            cpu: '1'
+            cpu: '0.6'
             memory: 1Gi
           requests:
-            cpu: '1'
+            cpu: '0.6'
             memory: 1Gi
       imagePullSecrets:
       - name: {{ .Release.Namespace }}-registry
