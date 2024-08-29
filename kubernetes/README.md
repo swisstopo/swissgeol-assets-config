@@ -32,16 +32,20 @@ helm install --dry-run swissgeol-search helm/swissgeol-search
 Use the following commands to install, upgrade and uninstall the swissgeol-asset/swissgeol-search application on the cluster.
 
 Valid actions are `install`, `upgrade` and `uninstall`.
-Valid apps are `assets` and `search`.
-Valid stages are `dev`, `int` and `prod`.
+Valid template are `swissgeol-assets` and `swissgeol-search`
+Valid stages are `dev`, `int` and `prod`
+Valid instance (optional) are `ext` and `view`
 
 ```bash
 # Installs the application on the cluster
-.\swissgeol-app.ps1 -action install -app assets -stage dev -context my-stage-context
+.\swissgeol-app.ps1 -action install -template swissgeol-assets -stage dev -context my-stage-context
+
+# Installs the application on the cluster as specific instance
+.\swissgeol-app.ps1 -action install -template swissgeol-search -stage prod -instance view -context my-stage-context
 
 # Update the application on the cluster
-.\swissgeol-app.ps1 -action upgrade -app assets -stage dev -context my-stage-context
+.\swissgeol-app.ps1 -action upgrade -template swissgeol-assets -stage dev -context my-stage-context
 
 # Uninstall the application from the cluster. Use with caution!
-.\swissgeol-app.ps1 -action uninstall -app assets -stage dev -context my-stage-context
+.\swissgeol-app.ps1 -action uninstall -template swissgeol-assets -stage dev -context my-stage-context
 ```

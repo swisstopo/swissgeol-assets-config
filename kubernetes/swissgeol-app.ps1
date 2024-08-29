@@ -1,23 +1,31 @@
 param (
     [Parameter(Mandatory=$true)]
-    [ValidateSet("assets","search")]
-    [string]$app,
+    [ValidateSet("swissgeol-assets","swissgeol-search")]
+    [string]$template,
 
-    [Parameter(Mandatory=$true)]
-    [ValidateSet("install","upgrade","uninstall")]
-    [string]$action,
+    [Parameter(Mandatory=$false)]
+    [ValidateSet("","ext","view")]
+    [string]$instance,
 
     [Parameter(Mandatory=$true)]
     [ValidateSet("dev","int","prod")]
     [string]$stage,
 
     [Parameter(Mandatory=$true)]
+    [ValidateSet("install","upgrade","uninstall")]
+    [string]$action,
+
+    [Parameter(Mandatory=$true)]
     [string]$context
 )
 
 # variables
-$namespace = "swissgeol-$app"
-$name = "swissgeol-$app"
+$postfix = ""
+if (![string]::IsNullOrEmpty($instance)) {
+    $postfix = "-$instance"
+} 
+$namespace = "$template$postfix" 
+$name = "$template$postfix"
 
 Write-Output "*** Prepare kubectl context '$context' ***"
 kubectl config use-context $context
@@ -26,9 +34,9 @@ kubectl config set-context --current --namespace=$namespace
 
 Write-Output "*** Execute action '$action' on context '$context' ***"
 if ($action -eq 'install') {
-    helm install $name helm/$name --namespace=$namespace --values helm/$name/values-$stage.yaml --values helm/$name/secrets-$stage.yaml
+    helm install $name helm/$template --namespace=$namespace --values helm/$template/values-$stage$postfix.yaml --values helm/$template/secrets-$stage$postfix.yaml
 } elseif ($action -eq 'upgrade') {
-    helm upgrade $name helm/$name --namespace=$namespace --values helm/$name/values-$stage.yaml --values helm/$name/secrets-$stage.yaml
+    helm upgrade $name helm/$template --namespace=$namespace --values helm/$template/values-$stage$postfix.yaml --values helm/$template/secrets-$stage$postfix.yaml
 } elseif ($action -eq 'uninstall') {
     helm uninstall $name --namespace=$namespace
 } else {
