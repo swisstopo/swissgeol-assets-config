@@ -74,12 +74,14 @@ spec:
             value: {{ .Values.oauth_token_endpoint }}
           - name: OAUTH_AUTHORIZED_GROUPS
             value: {{ .Values.oauth_authorized_groups }}
+          - name: ANONYMOUS_MODE
+            value: "{{ .Values.anonymous_mode }}"
         resources:
           limits:
             cpu: '0.6'
             memory: 1Gi
           requests:
             cpu: '0.6'
-            memory: 1Gi
+            memory: 500Mi
       imagePullSecrets:
       - name: {{ .Release.Namespace }}-registry

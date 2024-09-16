@@ -11,5 +11,5 @@ ocr_callback_url:
 oauth_issuer:
 oauth_client_id:
 oauth_scope:
-oaauth_show_debug_info:
+oauth_show_debug_info:
 oauth_token_endpoint:
