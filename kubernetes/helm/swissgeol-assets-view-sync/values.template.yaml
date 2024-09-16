@@ -1,0 +1,2 @@
+allowedWorkgroupIds: '1'
+image: 'swissgeol-assets-pipeline:latest'

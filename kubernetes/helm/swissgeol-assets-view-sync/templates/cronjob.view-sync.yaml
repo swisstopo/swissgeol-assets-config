@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    keel.sh/policy: force
+    keel.sh/match-tag: 'true'
+    keel.sh/trigger: poll
+spec:
+  schedule: "{{ .Values.app.schedule | default "0 0 * * *" }}"
+  timeZone: "Europe/Zurich"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: {{ .Release.Name }}
+              image: {{ .Values.image }}
+              imagePullPolicy: IfNotPresent
+
+              env:
+                - name: SOURCE_CONNECTION_STRING
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Release.Name }}-secrets
+                      key: sourceConnectionString
+                - name: DESTINATION_CONNECTION_STRING
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Release.Name }}-secrets
+                      key: destinationConnectionString
+                - name: ALLOWED_WORKGROUP_IDS
+                  value: {{ .Values.allowedWorkgroupIds }}
+          restartPolicy: Never
+      backoffLimit: 4
