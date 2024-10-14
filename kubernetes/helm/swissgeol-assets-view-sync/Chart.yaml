@@ -1,6 +1,6 @@
 apiVersion: v2
-name: swissgeol-assets-view-sync
-description: Synchronizes freely available assets from a source database to a target database.
+name: swissgeol-assets-sync
+description: Synchronizes assets between a source database and a target database.
 type: application
 version: 0.1.0
 appVersion: "1.2.0"

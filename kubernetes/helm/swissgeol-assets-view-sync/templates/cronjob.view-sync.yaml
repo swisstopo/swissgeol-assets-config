@@ -8,7 +8,7 @@ metadata:
     keel.sh/match-tag: 'true'
     keel.sh/trigger: poll
 spec:
-  schedule: "{{ .Values.app.schedule | default "0 0 * * *" }}"
+  schedule: "{{ .Values.cronSchedule | default "0 0 * * *" }}"
   timeZone: "Europe/Zurich"
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 3
@@ -20,7 +20,7 @@ spec:
           containers:
             - name: {{ .Release.Name }}
               image: {{ .Values.image }}
-              imagePullPolicy: IfNotPresent
+              imagePullPolicy: Always
 
               env:
                 - name: SOURCE_CONNECTION_STRING
@@ -28,12 +28,16 @@ spec:
                     secretKeyRef:
                       name: {{ .Release.Name }}-secrets
                       key: sourceConnectionString
+                - name: SOURCE_WORKGROUP_IDS
+                  value: "{{ .Values.sourceAllowedWorkgroupIds }}"
                 - name: DESTINATION_CONNECTION_STRING
                   valueFrom:
                     secretKeyRef:
                       name: {{ .Release.Name }}-secrets
                       key: destinationConnectionString
-                - name: ALLOWED_WORKGROUP_IDS
-                  value: {{ .Values.allowedWorkgroupIds }}
+                - name: DESTINATION_WORKGROUP_IDS
+                  value: "{{ .Values.destinationAllowedWorkgroupIds }}"
+                - name: MODE
+                  value: {{ .Values.mode }}
           restartPolicy: Never
       backoffLimit: 4

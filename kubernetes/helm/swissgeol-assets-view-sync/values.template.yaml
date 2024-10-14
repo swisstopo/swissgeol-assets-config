@@ -1,2 +1,4 @@
-allowedWorkgroupIds: '1'
+sourceAllowedWorkgroupIds: '1'
+destinationAllowedWorkgroupIds:
 image: 'swissgeol-assets-pipeline:latest'
+mode: 'view' # 'view' or 'extern'
