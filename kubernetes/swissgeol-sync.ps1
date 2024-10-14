@@ -1,6 +1,6 @@
 param (
     [Parameter(Mandatory=$true)]
-    [ValidateSet("swissgeol-assets-view-sync")]
+    [ValidateSet("swissgeol-assets-sync")]
     [string]$template,
 
     [Parameter(Mandatory=$true)]
