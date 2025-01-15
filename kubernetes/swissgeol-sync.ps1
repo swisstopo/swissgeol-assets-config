@@ -4,6 +4,10 @@ param (
     [string]$template,
 
     [Parameter(Mandatory=$true)]
+    [ValidateSet("swissgeol-assets-view-sync")]
+    [string]$name,
+
+    [Parameter(Mandatory=$true)]
     [ValidateSet("install","upgrade","uninstall")]
     [string]$action,
 
@@ -13,7 +17,6 @@ param (
 
 # variables
 $namespace = "$template"
-$name = "$template"
 
 Write-Output "*** Prepare kubectl context '$context' ***"
 kubectl config use-context $context
