@@ -17,6 +17,7 @@ spec:
       labels:
         app: {{ .Release.Name }}-api
     spec:
+      serviceAccountName: cognito
       containers:
       - name: {{ .Release.Name }}-api
         image: {{ .Values.image_api }}
@@ -58,6 +59,10 @@ spec:
                 key: s3SecretAccessKey
           - name: S3_ASSET_FOLDER
             value: {{ .Values.s3_asset_folder }}
+          - name: COGNITO_REGION
+            value: {{ .Values.cognito_region }}
+          - name: COGNITO_POOL_ID
+            value: {{ .Values.cognito_pool_id }}
           - name: OAUTH_ISSUER
             value: {{ .Values.oauth_issuer }}
           - name: OAUTH_CLIENT_ID
@@ -80,12 +85,12 @@ spec:
             value: ''
           - name: OCR_CALLBACK_URL
             value: ''
-        resources:
-          limits:
-            cpu: '0.6'
-            memory: 1Gi
-          requests:
-            cpu: '0.6'
-            memory: 500Mi
+#        resources:
+#          limits:
+#            cpu: '0.6'
+#            memory: 1Gi
+#          requests:
+#            cpu: '0.6'
+#            memory: 500Mi
       imagePullSecrets:
       - name: {{ .Release.Namespace }}-registry
